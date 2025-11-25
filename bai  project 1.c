@@ -61,6 +61,12 @@ int main() {
             	updatePatientInfo();
 				break;
 			}
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
             default: printf("Lua chon khong hop le!\n");
         }
     }
@@ -130,37 +136,69 @@ void CreateNewPatient() {
     
 void updatePatientInfo() {
     char id[10];
-    printf("Nhap cardId: ");
+    printf("Nhap cardId benh nhan can cap nhat: ");
     scanf("%s", id);
 
+    
     int idx = findPatient(id);
     if (idx == -1) {
-        printf("khong tim thay benh nhan\n");
+        printf("Khong tim thay benh nhan!\n");
         return;
     }
 
-    if (isDischarged(id)) {
-        printf("khong the cap nhat vi benh nhan da xuat vien\n");
+    
+    char newName[50];
+    printf("Nhap ten moi (khong duoc rong): ");
+    getchar(); 
+    fgets(newName, 50, stdin);
+    newName[strcspn(newName, "\n")] = 0;  
+
+    if (strlen(newName) == 0) {
+        printf("Ten khong duoc rong!\n");
         return;
     }
 
+    
     char newPhone[15];
     printf("Nhap so dien thoai moi: ");
     scanf("%s", newPhone);
 
-    if (strlen(newPhone) < 9) {
-        printf("thong tin nhap khong hop le\n");
+    
+    if (strlen(newPhone) == 0) {
+        printf("So dien thoai khong duoc rong!\n");
         return;
     }
+
+    
     for (int i = 0; newPhone[i] != '\0'; i++) {
         if (newPhone[i] < '0' || newPhone[i] > '9') {
-            printf("thong tin nhap khong hop le\n");
+            printf("So dien thoai phai chi chua chu so!\n");
             return;
         }
     }
 
+    
+    if (strlen(newPhone) < 9 || strlen(newPhone) > 14) {
+        printf("So dien thoai khong hop le!\n");
+        return;
+    }
+
+    double newDebt;
+    printf("Nhap debt moi: ");
+    scanf("%lf", &newDebt);
+
+    if (newDebt < 0) {
+        printf("Debt khong duoc am!\n");
+        return;
+    }
+
+   
+    strcpy(patients[idx].name, newName);
     strcpy(patients[idx].phone, newPhone);
-    printf("cap nhat thanh cong\n");
+    patients[idx].debt = newDebt;
+
+    printf("Cap nhat thong tin benh nhan thanh cong!\n");
+
 }
 
 
