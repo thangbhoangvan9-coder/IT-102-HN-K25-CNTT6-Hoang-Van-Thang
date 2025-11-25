@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-
+#define MAX 1000
 
 struct Patient {
     char cardId[10];
@@ -104,11 +104,11 @@ int isDischarged(char cardId[]) {
 void CreateNewPatient() {
     struct Patient patient;
 
-    printf("Nhap cardId: ");
+    printf("Nhap ma ho so: ");
     scanf("%s", patient.cardId);
 
     if (strlen(patient.cardId) == 0 || findPatient(patient.cardId) != -1) {
-        printf("cardId rong hoac da ton tai!\n");
+        printf("ma ho so rong hoac da ton tai!\n");
         return;
     }
 
@@ -140,8 +140,8 @@ void updatePatientInfo() {
     scanf("%s", id);
 
     
-    int idx = findPatient(id);
-    if (idx == -1) {
+    int index = findPatient(id);
+    if (index == -1) {
         printf("Khong tim thay benh nhan!\n");
         return;
     }
@@ -193,9 +193,9 @@ void updatePatientInfo() {
     }
 
    
-    strcpy(patients[idx].name, newName);
-    strcpy(patients[idx].phone, newPhone);
-    patients[idx].debt = newDebt;
+    strcpy(patients[index].name, newName);
+    strcpy(patients[index].phone, newPhone);
+    patients[index].debt = newDebt;
 
     printf("Cap nhat thong tin benh nhan thanh cong!\n");
 
