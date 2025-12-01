@@ -40,13 +40,14 @@ int isDischarged(char cardId[]);
 void loadSamplePatients();
 
 
-void CreateNewPatient();
+void createNewPatient();
 void updatePatientInfo();
-void DischargePatient();
-void ShowCurrentPatients(struct Patient patients[], int patientCount);
-void SearchPatient();
-void SortbyDebt();
-void CreateMedicalRecord();
+void dischargePatient();
+void showCurrentPatients(struct Patient patients[], int patientCount);
+void searchPatient();
+void sortbyDebt();
+void createMedicalRecord();
+void viewMedicalHistory();
 
 char *strcasestr_custom(const char *haystack, const char *needle) {
     if (!*needle) return (char *)haystack;
@@ -86,14 +87,14 @@ int main() {
         choice = readInt("Nhap lua chon: ");
 
         switch (choice) {
-            case 1: CreateNewPatient(); break;
+            case 1: createNewPatient(); break;
             case 2: updatePatientInfo(); break;
-            case 3: DischargePatient(); break;
-            case 4: ShowCurrentPatients(patients, patientCount); break;
-            case 5: SearchPatient(); break;
-            case 6: SortbyDebt(); break;
-            case 7: CreateMedicalRecord(); break;
-            case 8:
+            case 3: dischargePatient(); break;
+            case 4: showCurrentPatients(patients, patientCount); break;
+            case 5: searchPatient(); break;
+            case 6: sortbyDebt(); break;
+            case 7: createMedicalRecord(); break;
+            case 8: viewMedicalHistory(); break;
             default: printf("Lua chon khong hop le!\n");
         }
     }
@@ -203,7 +204,7 @@ void loadSamplePatients() {
 
 
 
-void CreateNewPatient() {
+void createNewPatient() {
     struct Patient patient;
     char buf[100];
 
@@ -266,7 +267,7 @@ void updatePatientInfo() {
     printf("Cap nhat thanh cong!\n");
 }
 
-void DischargePatient() {
+void dischargePatient() {
     char id[10];
     char buf[100];
 
@@ -313,7 +314,7 @@ void DischargePatient() {
     printf("Xuat vien thanh cong\n");
 }
 
-void ShowCurrentPatients(struct Patient patients[], int patientCount) {
+void showCurrentPatients(struct Patient patients[], int patientCount) {
     if (patientCount == 0) {
         printf("Danh sach benh nhan hien dang trong.\n");
         return;
@@ -381,7 +382,7 @@ void ShowCurrentPatients(struct Patient patients[], int patientCount) {
 }
 
 
-void SearchPatient() {
+void searchPatient() {
     char keyword[50];
     int continueSearch = 1;
 
@@ -430,7 +431,7 @@ void SearchPatient() {
     }
 }
 
-void SortbyDebt() {
+void sortbyDebt() {
     if (patientCount == 0) { 
         printf("Danh sach benh nhan hien dang trong.\n");
         return;  
@@ -510,20 +511,20 @@ void SortbyDebt() {
 
 
 int isValidDate(const char *d) {
-    int day, month, year;
-    if (sscanf(d, "%d/%d/%d", &day, &month, &year) != 3)
+     int day, month, year;
+
+    if (sscanf(d, "%d/%d/%d", &day, &month, &year) != 3 &&
+        sscanf(d, "%d %d %d", &day, &month, &year) != 3)
         return 0;
-    if (year < 1000 || year > 3000)
-        return 0;
-    if (month < 1 || month > 12)
-        return 0;
-    if (day < 1 || day > 31)
-        return 0;
+
+    if (year < 1000 || year > 3000) return 0;
+    if (month < 1 || month > 12) return 0;
+    if (day < 1 || day > 31) return 0;
 
     return 1;
 }
 
-void CreateMedicalRecord() {
+void createMedicalRecord() {
     char cardId[20], date[20];
     char buf[100];
 
@@ -566,4 +567,54 @@ void CreateMedicalRecord() {
 
     printf("Ghi nhan lich kham ngay %s cho benh nhan %s thanh cong.\n",
            date, cardId);
+}
+
+
+void viewMedicalHistory() {
+    char cardId[20], buf[100];
+
+    printf("\n===== XEM LICH SU KHAM BENH =====\n");
+
+    while (1) {
+        readNonEmpty("Nhap ma benh nhan: ", buf, sizeof(buf));
+
+        if (strlen(buf) == 0) {
+            printf("Khong duoc de rong. Vui long nhap lai.\n");
+            continue;
+        }
+
+        strcpy(cardId, buf);
+
+        if (findPatient(cardId) == -1) {
+            printf("Ma benh nhan '%s' khong ton tai! Vui long nhap lai.\n", cardId);
+            continue;
+        }
+
+        break;
+    }
+
+    printf("\n=== LICH SU KHAM CUA BENH NHAN %s ===\n", cardId);
+
+    int found = 0;
+
+    for (int i = 0; i < recordCount; i++) {
+
+        if (strcmp(records[i].cardId, cardId) == 0) {
+
+           
+            printf("%s - %s - %s\n",
+                   records[i].recId,
+                   records[i].date,
+                   records[i].status);
+
+            found = 1;
+        }
+
+    }
+
+    if (!found) {
+        printf("Khong co lich su kham nao duoc ghi nhan!\n");
+    }
+
+    printf("=====================================\n");
 }
