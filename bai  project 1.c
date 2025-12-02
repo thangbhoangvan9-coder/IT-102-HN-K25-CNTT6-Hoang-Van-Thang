@@ -5,7 +5,7 @@
 
 
 
-struct Patient {
+struct Patient {            
     char cardId[10];
     char name[50];
     char phone[15];
@@ -13,14 +13,14 @@ struct Patient {
     int visitDays;
 };
 
-struct Record {
+struct Record {       
     char recId[20];
     char cardId[10];
     char date[20];
     char status[20];
 };
 
-struct Patient patients[10000];
+struct Patient patients[10000];   
 struct Record records[10000];
 
 int patientCount = 0;
@@ -50,6 +50,7 @@ void createMedicalRecord();
 void viewMedicalHistory();
 
 
+
 int main() {
 	loadSamplePatients(); 
     int choice;
@@ -57,15 +58,14 @@ int main() {
         printf("\n=================================================\n");
         printf("|              QUAN LY BENH NHAN                |\n");
         printf("=================================================\n");
-        printf("| 1. Tiep nhan benh nhan                         |\n");
-        printf("| 2. Cap nhat thong tin benh nhan                |\n");
-        printf("| 3. Xuat vien (xoa benh nhan)                   |\n");
-        printf("| 4. Hien thi danh sach benh nhan                |\n");
-        printf("| 5. Tim kiem benh nhan                          |\n");
-        printf("| 6. Sap xep benh nhan theo debt                 |\n");
-        printf("| 7. Ghi nhan kham benh                          |\n");
-        printf("| 8. Xem lich su kham benh                       |\n");
-        printf("| 0. Thoat                                       |\n");
+        printf("| F01. Tiep nhan benh nhan                         |\n");
+        printf("| F02. Cap nhat thong tin benh nhan                |\n");
+        printf("| F03. Xuat vien (xoa benh nhan)                   |\n");
+        printf("| F04. Hien thi danh sach benh nhan                |\n");
+        printf("| F05. Tim kiem benh nhan                          |\n");
+        printf("| F06. Sap xep benh nhan theo debt                 |\n");
+        printf("| F07. Ghi nhan kham benh                          |\n");
+        printf("| F08. Xem lich su kham benh                       |\n");                                    
         printf("=================================================\n");
         choice = readInt("Nhap lua chon: ");
 
@@ -381,7 +381,7 @@ void searchPatient() {
 
         printf("\n=== Ket qua tim kiem ===\n");
 
-        for (int i = 0; i < patientCount; i++) {                            ////strcasestr_custom
+        for (int i = 0; i < patientCount; i++) {                            
             if (strstr(patients[i].name, keyword) != NULL) {
                 printf("Ma ho so: %s\n", patients[i].cardId);
                 printf("Ho ten: %s\n", patients[i].name);
