@@ -49,23 +49,6 @@ void sortbyDebt();
 void createMedicalRecord();
 void viewMedicalHistory();
 
-char *strcasestr_custom(const char *haystack, const char *needle) {
-    if (!*needle) return (char *)haystack;
-
-    for (; *haystack; haystack++) {
-        const char *h = haystack;
-        const char *n = needle;
-
-        while (*h && *n && tolower((unsigned char)*h) == tolower((unsigned char)*n)) {
-            h++;
-            n++;
-        }
-
-        if (!*n) return (char *)haystack;
-    }
-
-    return NULL;
-}
 
 int main() {
 	loadSamplePatients(); 
@@ -145,7 +128,7 @@ double readDouble(const char *prompt) {
             continue;
         }
         if (sscanf(line, "%lf", &value) == 1) return value;
-        printf("Nhap sai dinh dang. Vui long nhap so (vd: 12.5).\n");
+        printf("Nhap sai dinh dang. Vui long nhap so.\n");
     }
 }
 
@@ -219,7 +202,7 @@ void createNewPatient() {
         printf("Ma ho so da ton tai!\n");
         return;
     }
-
+    
     readNonEmpty("Nhap ten: ", patient.name, sizeof(patient.name));
 
     readNonEmpty("Nhap so dien thoai: ", patient.phone, sizeof(patient.phone));
@@ -457,7 +440,6 @@ void sortbyDebt() {
                 needSwap = 1;
             if (choice == 2 && patients[i].debt < patients[j].debt)
                 needSwap = 1;
-
             if (needSwap) {
                 struct Patient temp = patients[i];
                 patients[i] = patients[j];
@@ -530,7 +512,6 @@ void createMedicalRecord() {
 
     printf("\n===== TAO RECORD KHAM BENH =====\n");
 
-    
     readNonEmpty("Nhap ma benh nhan: ", buf, sizeof(buf));
     strcpy(cardId, buf);
 
@@ -549,11 +530,12 @@ void createMedicalRecord() {
         printf("Dinh dang ngay kham khong hop le! Vui long nhap dung dinh dang.\n");
     }
 
+   
     if (recordExists(cardId, date)) {
-        printf("Benh nhan %s da duoc ghi nhan lich kham vao ngay %s truoc do.\n",
-               cardId, date);
+        printf("Benh  nhan  %s da duoc ghi nnhan vao ngay nay roi.\n", cardId);
         return;
     }
+  
 
     patients[index].visitDays++;
 
